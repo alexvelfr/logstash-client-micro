@@ -21,10 +21,14 @@ func (c *client) LogError(ctx context.Context, msg Message) error {
 }
 
 func (c *client) logError(ctx context.Context, msg Message) error {
+	var errStr string
+	if msg.Error != nil {
+		errStr = msg.Error.Error()
+	}
 	m := message{
 		Message:      msg,
 		Microservice: c.serviceName,
-		Error:        msg.Error.Error(),
+		Error:        errStr,
 	}
 	btReq, err := json.Marshal(m)
 	if err != nil {
